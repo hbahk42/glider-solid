@@ -5,8 +5,24 @@ import { FaRegularImage, FaRegularHeart } from "solid-icons/fa";
 
 import MainLayout from "./components/layouts/Main";
 
+type Glide = {
+  content: string;
+}
+
 const App: Component = () => {
   const [content, setContent] = createSignal("");
+  const [glides, setGlides] = createSignal<Glide[]>([]);
+
+  const createGlide = () => {
+    const glide = {
+      content: content()
+    };
+    setGlides([...glides(), glide]);
+
+    setContent("");
+
+    console.log(JSON.stringify(glides()));
+  };
 
   return (
     <MainLayout>
@@ -24,6 +40,7 @@ const App: Component = () => {
         <div class="flex-it flex-grow">
           <div class="flex-it">
             <textarea
+              value={content()}
               onInput={(event) => {
                 setContent(event.currentTarget.value);
               }}
@@ -43,6 +60,7 @@ const App: Component = () => {
             </div>
             <div class="flex-it w-32 mt-3 cursor-pointer">
               <button
+                onClick={createGlide}
                 type="button"
                 class="
                              disabled:cursor-not-allowed disabled:bg-gray-400
@@ -56,7 +74,6 @@ const App: Component = () => {
           </div>
         </div>
         {/* MESSENGER END */}
-        {content()}
       </div>
       <div class="h-px bg-gray-700 my-1" />
       {/* GLIDE POST START */}
